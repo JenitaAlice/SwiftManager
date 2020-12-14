@@ -1,0 +1,6 @@
+use_frameworks!
+target 'Xtream_Tests' do
+  pod 'Xtream', :path => '../'
+  
+  
+end
