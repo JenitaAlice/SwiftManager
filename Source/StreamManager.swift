@@ -377,7 +377,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
                 for keySim in sTypeMap.keyEnumerator() {
                     //print("\n\nKey = \(keySim)\n")
                     if let subArray = sTypeMap.object(forKey: (keySim as! String)) as! NSMutableArray? {
-                        for value in subArray {
+                        for _ in subArray {
                             //print("\tValue = \(value)\n")
                         }
                     }
