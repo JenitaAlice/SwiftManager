@@ -1,0 +1,16 @@
+PODS:
+  - Xtream (0.1.0)
+
+DEPENDENCIES:
+  - Xtream (from `../`)
+
+EXTERNAL SOURCES:
+  Xtream:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Xtream: b048fdef6e3882b30aeec5e92dd55b6d71f35785
+
+PODFILE CHECKSUM: a24fb1dab03a58f9f850f95df81223384986aa08
+
+COCOAPODS: 1.10.0

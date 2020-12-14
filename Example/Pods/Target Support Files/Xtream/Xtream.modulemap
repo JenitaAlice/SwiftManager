@@ -1,0 +1,6 @@
+framework module Xtream {
+  umbrella header "Xtream-umbrella.h"
+
+  export *
+  module * { export * }
+}
