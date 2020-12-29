@@ -13,6 +13,6 @@ public struct StreamerConfig {
     public var socketMode: String!
     public var socketHostPort: Int!
     public var binaryStream: Bool!
-    let socketTimeout: Int64 = Int64((Date().timeIntervalSince1970 * 2000.0).rounded())
+    public let socketTimeout: Int64 = Int64((Date().timeIntervalSince1970 * 2000.0).rounded())
     
 }
