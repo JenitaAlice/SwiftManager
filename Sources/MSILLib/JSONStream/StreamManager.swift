@@ -69,7 +69,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         }
     }
     
-    public func subscribes(sym: String, objSub: StreamerManagerDelegate?, sType: StreamType) {
+    private func subscribes(sym: String, objSub: StreamerManagerDelegate?, sType: StreamType) {
         if let obj = objSub {
             let sTypeMap = (mapTable.object(forKey: sType.rawValue as AnyObject)) ?? NSMapTable<AnyObject, AnyObject>()
             mapTable.setObject(sTypeMap, forKey: sType.rawValue as AnyObject)
@@ -109,7 +109,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
     }
     
     ////    Don't remove the function and need to check
-    public func unSubscribe(objSub:StreamerManagerDelegate?, sType:StreamType) {
+    private func unSubscribe(objSub:StreamerManagerDelegate?, sType:StreamType) {
         if let sTypeMap = getMapTable(sType: sType) {
             let removeSimKeys = NSMutableArray()
             for keySim in sTypeMap.keyEnumerator() {
@@ -247,7 +247,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         reqData.symbols = [StreamSymbol]()
         
         var request = MSFStreamRequest<StreamRequestQuote>()
-        request.request.request_type = "unsubscribe"
+        request.request.request_type = StreamRequestType.unsubscribe
         if let newSyms = symbols {
             mapOldSymTable.setObject(symbols as AnyObject, forKey: sType.rawValue as AnyObject)
             for key in newSyms {
@@ -257,7 +257,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
             }
         }
         if reqData.symbols.count > 0 {
-            request.request.request_type = "subscribe"
+            request.request.request_type = StreamRequestType.subscribe
         }
         request.request.data = reqData
         request.request.streaming_type = sType.rawValue
