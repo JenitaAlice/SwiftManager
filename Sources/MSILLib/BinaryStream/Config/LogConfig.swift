@@ -9,9 +9,9 @@ import Foundation
 
 public class LogConfig {
     
-    var showLog: Bool  = false
+    public var showLog: Bool  = false
     
-    func printLog(msg: String) {
+    public func printLog(msg: String) {
         if(showLog){
           print(msg)
         }

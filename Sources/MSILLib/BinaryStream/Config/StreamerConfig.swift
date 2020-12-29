@@ -9,10 +9,10 @@ import Foundation
 
 public struct StreamerConfig {
     
-    var socketHostUrl: String!
-    var socketMode: String!
-    var socketHostPort: Int!
-    var binaryStream: Bool!
+    public var socketHostUrl: String!
+    public var socketMode: String!
+    public var socketHostPort: Int!
+    public var binaryStream: Bool!
     let socketTimeout: Int64 = Int64((Date().timeIntervalSince1970 * 2000.0).rounded())
     
 }

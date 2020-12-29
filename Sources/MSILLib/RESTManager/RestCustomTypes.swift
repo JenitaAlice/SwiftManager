@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RestManager {
+public extension RestManager {
     
     public enum HttpMethod: String {
         case get

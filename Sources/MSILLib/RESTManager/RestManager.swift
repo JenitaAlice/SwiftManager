@@ -9,11 +9,11 @@ import Foundation
 
 public class RestManager {
     
-    var requestHttpHeaders = RestEntity()
-    var urlQueryParameters = RestEntity()
-    var httpBodyParameters = RestEntity()
+    public var requestHttpHeaders = RestEntity()
+    public var urlQueryParameters = RestEntity()
+    public var httpBodyParameters = RestEntity()
     
-    var httpBody: Data?
+    public var httpBody: Data?
     
     public func makeRequest(toURL url: URL,
                      withHttpMethod httpMethod: HttpMethod,
