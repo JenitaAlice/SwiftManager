@@ -14,8 +14,8 @@ struct MarketDepthStreamerResponse : DataProvider {
     var tbq : String!
     var ltt : String!
     var sym : String!
-    //var bid : [MarketDepthStreamerResponseBid]!//Array of objects of class MarketDepthStreamerResponseBid
-    //var ask : [MarketDepthStreamerResponseAsk]!//Array of objects of class MarketDepthStreamerResponseAsk
+    var bid : [MarketDepthStreamerResponseBid]!//Array of objects of class MarketDepthStreamerResponseBid
+    var ask : [MarketDepthStreamerResponseAsk]!//Array of objects of class MarketDepthStreamerResponseAsk
 
     public enum CodingKeys: String, CodingKey
     {

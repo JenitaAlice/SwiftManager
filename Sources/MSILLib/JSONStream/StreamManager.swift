@@ -5,11 +5,9 @@
 //  Created by Janita Alice on 08/12/20.
 //
 
-#if !os(macOS)
-
 import UIKit
 
-protocol StreamerManagerDelegate: class {
+public protocol StreamerManagerDelegate: class {
     func streamingResponseRecived<response: DataProvider>(response: response)
 }
 
@@ -18,7 +16,7 @@ public enum StreamType: String {
     case Quote2 = "quote2"
 }
 
-class StreamerManager: NSObject, SocketHelperDelegate {
+public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelegate {
     
     static let shared = StreamerManager()
     private var sh: SocketHelper?//SocketHelper(url: AppUrl.stream, port: UInt32(AppUrl.port))
@@ -26,23 +24,38 @@ class StreamerManager: NSObject, SocketHelperDelegate {
     private let decoder = JSONDecoder()
     private var mapTable = NSMapTable<AnyObject, AnyObject>()
     private var mapOldSymTable = NSMapTable<AnyObject, AnyObject>()
-    var isStreamingAvailable = true
+    public var streamerConfig: StreamerConfig?
+    public var logConfig: LogConfig = LogConfig()
+    public var isStreamingAvailable = true
+    private var ssl = false
+    private var isBinary = false
     
-    private override init() {
+    public override init() {
         super.init()
     }
-    func createConnection(streamingURL: String, streamingPort: String) {
+    
+    public func createConnection() {
         if sh == nil {
-            sh = SocketHelper(aUrl: streamingURL, aPort: UInt32(streamingPort)!)
+            if let port = streamerConfig?.socketHostPort, let url = streamerConfig?.socketHostUrl {
+                ssl = (streamerConfig?.socketMode == SocketMode.TLS) ? true : false
+                isBinary = ((streamerConfig?.binaryStream) != nil)
+                sh = SocketHelper(aUrl: url, aPort: UInt32(String(port))!)
+            }else{
+                logConfig.printLog(msg: ErrorMsgConfig().network_Invalid_response)
+            }
         }
         if let socketHelper = sh {
+            socketHelper.streamerConfig = streamerConfig
+            socketHelper.logConfig = logConfig
             socketHelper.openStream()
             socketHelper.delegate = self
         }
     }
     
-    func closeConnection() {
+    public func closeConnection() {
         if let socketHelper = sh {
+            socketHelper.streamerConfig = streamerConfig
+            socketHelper.logConfig = logConfig
             socketHelper.stopStream()
             NSObject.cancelPreviousPerformRequests(withTarget:socketHelper)
             sh = nil
@@ -50,13 +63,13 @@ class StreamerManager: NSObject, SocketHelperDelegate {
     }
     
     // MARK: - Subscribtion Methods
-    func subscribe(syms: [String], objSub: StreamerManagerDelegate?, sType: StreamType) {
+    public func subscribe(syms: [String], objSub: StreamerManagerDelegate?, sType: StreamType) {
         for sym in syms {
             subscribes(sym: sym, objSub: objSub, sType: sType)
         }
     }
     
-    func subscribes(sym: String, objSub: StreamerManagerDelegate?, sType: StreamType) {
+    public func subscribes(sym: String, objSub: StreamerManagerDelegate?, sType: StreamType) {
         if let obj = objSub {
             let sTypeMap = (mapTable.object(forKey: sType.rawValue as AnyObject)) ?? NSMapTable<AnyObject, AnyObject>()
             mapTable.setObject(sTypeMap, forKey: sType.rawValue as AnyObject)
@@ -70,7 +83,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
         }
     }
     
-    func unSubscribe(aSym: String?, objSub: StreamerManagerDelegate?, sType: StreamType) {
+    public func unSubscribe(aSym: String?, objSub: StreamerManagerDelegate?, sType: StreamType) {
         if let obj = objSub {
             if let sTypeMap = getMapTable(sType: sType) {
                 let removeSimKeys = NSMutableArray()
@@ -96,7 +109,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
     }
     
     ////    Don't remove the function and need to check
-    func unSubscribe(objSub:StreamerManagerDelegate?, sType:StreamType) {
+    public func unSubscribe(objSub:StreamerManagerDelegate?, sType:StreamType) {
         if let sTypeMap = getMapTable(sType: sType) {
             let removeSimKeys = NSMutableArray()
             for keySim in sTypeMap.keyEnumerator() {
@@ -117,30 +130,24 @@ class StreamerManager: NSObject, SocketHelperDelegate {
         }
     }
     
-//    func unSubscribe(sType: StreamType) {
-//        if let sTypeMap = getMapTable(sType: sType) {
-//            sTypeMap.removeAllObjects()
-//        }
-//    }
-    
-    func unSubscribeAll() {
+    public func unSubscribeAll() {
         mapTable.removeAllObjects()
         mapOldSymTable.removeAllObjects()
     }
     
     // MARK: - Action Methods
-    func startStreamingForType(sType: StreamType) {
+    public func startStreamingForType(sType: StreamType) {
         if let arySymbols = getSymbols(sType: sType) {
             request(symbols: arySymbols, sType: sType)
         }
     }
     
-    func stopStreamingForType(sType: StreamType) {
+    public func stopStreamingForType(sType: StreamType) {
 //        request(symbols: nil, sType: sType)
         startStreamingForType(sType: sType)
     }
     
-    func pauseStreamingForType(sType: StreamType) {
+    public func pauseStreamingForType(sType: StreamType) {
         if getSymbols(sType: sType) != nil {
             request(symbols: nil, sType: sType)
             // Should we remove the old backup symbols
@@ -148,7 +155,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
         }
     }
     
-    func resumeStreamingForType(sType: StreamType) {
+    public func resumeStreamingForType(sType: StreamType) {
         startStreamingForType(sType: sType)
     }
     
@@ -181,9 +188,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
         }
         return nil
     }
-    //    private func isAnUnSubscribeRequestDublicate(oldSyms:NSArray, newSyms:NSArray) -> Bool {
-    //        return
-    //    }
+
     private func isSymbolsDublicate(newSymobls: [Any]?, sType: StreamType) -> Bool {
         if let newSyms = newSymobls {
             if let oldSymbols = mapOldSymTable.object(forKey: sType.rawValue as AnyObject) {
@@ -256,43 +261,79 @@ class StreamerManager: NSObject, SocketHelperDelegate {
         }
         request.request.data = reqData
         request.request.streaming_type = sType.rawValue
-        request.request.response_format = "json"
-        request.request.appID = ""
-        request.echo.appID = ""
+        request.request.response_format = (isBinary) ? "json" : nil
         
         do {
             var encodeJSONData =  try encoder.encode(request)
             //Add \n at the end
             encodeJSONData.append(Data("\n".utf8))
             if let socketHelper = sh {
+                socketHelper.streamerConfig = streamerConfig
+                socketHelper.logConfig = logConfig
                 socketHelper.request(request: encodeJSONData, sType:sType.rawValue)
             }
         } catch {
-            //print(error.localizedDescription)
+            logConfig.printLog(msg: error.localizedDescription)
         }
     }
     
     
     
     // MARK: - SocketHelper Delegate Methods
+    func responseBinaryReceived(response: [UInt8]) {
+        let parser = BinaryParser()
+        parser.delegate = self
+        parser.setBinaryData(data: response)
+    }
+    
+    func binaryResponseRecived(response: NSDictionary) {
+        if let resp = (response)["response"] as? NSDictionary {
+            if let sType = resp["streaming_type"] as? StreamType {
+                if let data = resp["data"] as? NSDictionary {
+                    if(sType == .Quote){
+                        let spec = decode(data: data as! [String : Any], type: BinaryStreamerResponse.self)!
+                        if let symbol = spec.symbol {
+                            if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType.rawValue)!) {
+                                for subscriber in subscribers {
+                                    let sub = (subscriber as! StreamerManagerDelegate)
+                                    sub.streamingResponseRecived(response: spec)
+                                    logConfig.printLog(msg: "\(spec)")
+                                }
+                            }
+                        }
+                    }else{
+                        let spec = decode(data: data as! [String : Any], type: BinaryQuoteStreamerResponse.self)!
+                        if let symbol = spec.symbol {
+                            if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType.rawValue)!) {
+                                for subscriber in subscribers {
+                                    let sub = (subscriber as! StreamerManagerDelegate)
+                                    sub.streamingResponseRecived(response: spec)
+                                    logConfig.printLog(msg: "\(spec)")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func responseReceived(response: Data) {
+        
         do {
             if let json = try JSONSerialization.jsonObject(with: response, options: .mutableContainers) as? [String: Any] {
                 if let dicResponse = json["response"] {
                     if let streaming_type = (dicResponse as! [String: Any])["streaming_type"] as? String {
                         if streaming_type == StreamType.Quote.rawValue {
                             do {
-                                // make sure this JSON is in the format we expect
                                 let res = try decoder.decode(MSFStreamResponse<QuoteStreamerResponse>.self, from: response)
-//                                if let strData = String(data:response, encoding: String.Encoding.utf8) {
-////                                    //print("Stream Response : \(strData)")
-//                                }
                                 if let sType = res.response.streaming_type {
                                     if let symbol = res.response.data?.sym {
                                         if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType)!) {
                                             for subscriber in subscribers {
                                                 let sub = (subscriber as! StreamerManagerDelegate)
                                                 sub.streamingResponseRecived(response: res.response.data!)
+                                                logConfig.printLog(msg: "\(String(describing: res.response.data))")
                                             }
                                         }
                                     }
@@ -300,16 +341,14 @@ class StreamerManager: NSObject, SocketHelperDelegate {
                             } catch {}
                         } else {
                             do {
-                                // make sure this JSON is in the format we expect
                                 let res = try decoder.decode(MSFStreamResponse<MarketDepthStreamerResponse>.self, from: response)
-                                //let strData = String(data:response, encoding: String.Encoding.utf8)
-                                //                                //print("Stream Response : \(res)")
                                 if let sType = res.response.streaming_type {
                                     if let symbol = res.response.data?.sym {
                                         if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType)!) {
                                             for subscriber in subscribers {
                                                 let sub = (subscriber as! StreamerManagerDelegate)
                                                 sub.streamingResponseRecived(response: res.response.data!)
+                                                logConfig.printLog(msg: "\(String(describing: res.response.data))")
                                             }
                                         }
                                     }
@@ -320,7 +359,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
                 }
             }
         } catch let error as NSError {
-            print("Failed to load: \(error.localizedDescription)")
+            logConfig.printLog(msg: error.localizedDescription)
         }
     }
     
@@ -379,7 +418,7 @@ class StreamerManager: NSObject, SocketHelperDelegate {
                 for keySim in sTypeMap.keyEnumerator() {
                     //print("\n\nKey = \(keySim)\n")
                     if let subArray = sTypeMap.object(forKey: (keySim as! String)) as! NSMutableArray? {
-                        for value in subArray {
+                        for _ in subArray {
                             //print("\tValue = \(value)\n")
                         }
                     }
@@ -387,6 +426,15 @@ class StreamerManager: NSObject, SocketHelperDelegate {
             }
         }
     }
+    
+    func decode<T: Decodable>(data: [String : Any], type: T.Type) -> T? {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data)
+            return try JSONDecoder().decode(T.self, from: jsonData)
+        } catch {
+            return nil
+        }
+    }
 }
 
-#endif
+

@@ -5,8 +5,6 @@
 //  Created by Janita Alice on 08/12/20.
 //
 
-#if !os(macOS)
-
 import Foundation
 import UIKit
 
@@ -68,4 +66,4 @@ struct JSONStreamEchoPart<T: DataProvider> : Codable {
     
 }
 
-#endif
+

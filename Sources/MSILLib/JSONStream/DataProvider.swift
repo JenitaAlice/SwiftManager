@@ -1,11 +1,9 @@
 //
-//  File.swift
-//  
+//  DataProvider.swift
+//  Streaming SDK
 //
-//  Created by Janita Alice on 14/12/20.
+//  Created by Janita Alice on 08/12/20.
 //
-
-#if !os(macOS)
 
 import UIKit
 
@@ -38,4 +36,3 @@ extension DataProvider {
     }
 }
 
-#endif

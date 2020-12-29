@@ -5,12 +5,11 @@
 //  Created by Janita Alice on 08/12/20.
 //
 
-#if !os(macOS)
-
 import UIKit
 
 protocol SocketHelperDelegate: class {
     func responseReceived(response: Data)
+    func responseBinaryReceived(response: [UInt8])
     func connectionCompleted()
     func connectionInetrupted()
     func callRequestForReconnect()
@@ -23,7 +22,8 @@ class SocketHelper: NSObject, StreamDelegate {
     var oStream: OutputStream?
     var commonStr: String?
     lazy var lastRequest = Dictionary<String, Data> ()
-    var ssl = false
+    var streamerConfig: StreamerConfig?
+    var logConfig: LogConfig?
     weak var delegate: SocketHelperDelegate?
     
     init(aUrl: String, aPort: UInt32) {
@@ -63,7 +63,7 @@ class SocketHelper: NSObject, StreamDelegate {
             iStream = readStream!.takeRetainedValue()
             oStream = writeStream!.takeRetainedValue()
             
-            if ssl == true {
+            if streamerConfig?.socketMode == SocketMode.TLS {
                 let dict = [
                     kCFStreamSSLValidatesCertificateChain: kCFBooleanFalse,     // allow self-signed certificate
                     kCFStreamSSLLevel: kCFStreamSSLValidatesCertificateChain    // don't understand, why there isn't a constant for version 1.2
@@ -74,12 +74,12 @@ class SocketHelper: NSObject, StreamDelegate {
                 
                 if sslSetRead == false || sslSetWrite == false {
                     //print("SSL Configuration Failed")
+                    logConfig?.printLog(msg: "SSL Configuration Failed")
                 }
             }
             commonStr = ""
             open(iStream)
             open(oStream)
-            print("Open Stream")
         }
     }
     func open(_ stream: Stream?) {
@@ -90,7 +90,7 @@ class SocketHelper: NSObject, StreamDelegate {
         }
     }
     func stopStream() {
-        print("Stop Stream")
+        //print("Stop Stream")
         close(iStream)
         close(oStream)
         iStream = nil
@@ -125,18 +125,22 @@ class SocketHelper: NSObject, StreamDelegate {
     }
     func bufferTokenize(output: Data?) {
         if let outData = output {
-            if let jsonStr = String(data: outData, encoding: String.Encoding.utf8) {
-                commonStr = commonStr?.appending(jsonStr)
-                if let array = commonStr?.components(separatedBy: "\n") {
-                    commonStr = array.last
-                    if let delegate = delegate {
-                        var i = 0
-                        while i < array.count - 1 {
-                            delegate.responseReceived(response: Data(array[i].utf8))
-                            i += 1
+            if(streamerConfig?.binaryStream != nil && !(streamerConfig?.binaryStream)!){
+                if let jsonStr = String(data: outData, encoding: String.Encoding.utf8) {
+                    commonStr = commonStr?.appending(jsonStr)
+                    if let array = commonStr?.components(separatedBy: "\n") {
+                        commonStr = array.last
+                        if let delegate = delegate {
+                            var i = 0
+                            while i < array.count - 1 {
+                                delegate.responseReceived(response: Data(array[i].utf8))
+                                i += 1
+                            }
                         }
                     }
                 }
+            }else{
+                delegate?.responseBinaryReceived(response: [UInt8](outData))
             }
         }
     }
@@ -151,7 +155,7 @@ class SocketHelper: NSObject, StreamDelegate {
     }
     // MARK: StreamDelegate
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-//        print("Stream : \(aStream.debugDescription) Event : \(eventCode.rawValue)")
+
         switch eventCode {
         case .endEncountered, .errorOccurred:
             streamError()
@@ -194,4 +198,4 @@ class SocketHelper: NSObject, StreamDelegate {
     }
 }
 
-#endif
+

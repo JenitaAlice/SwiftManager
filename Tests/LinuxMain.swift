@@ -1,7 +1,7 @@
 import XCTest
 
-import MSXtreamSDKTests
+import MSILLibTests
 
 var tests = [XCTestCaseEntry]()
-tests += MSXtreamSDKTests.allTests()
+tests += MSILLibTests.allTests()
 XCTMain(tests)
