@@ -40,11 +40,11 @@ public extension RestManager {
     
     
     public struct Response {
-        var response: URLResponse?
-        var httpStatusCode: Int = 0
-        var headers = RestEntity()
+        public var response: URLResponse?
+        public var httpStatusCode: Int = 0
+        public var headers = RestEntity()
         
-        init(fromURLResponse response: URLResponse?) {
+        public init(fromURLResponse response: URLResponse?) {
             guard let response = response else { return }
             self.response = response
             httpStatusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
@@ -60,17 +60,17 @@ public extension RestManager {
     
     
     public struct Results {
-        var data: Data?
-        var response: Response?
-        var error: Error?
+        public var data: Data?
+        public var response: Response?
+        public var error: Error?
         
-        init(withData data: Data?, response: Response?, error: Error?) {
+        public init(withData data: Data?, response: Response?, error: Error?) {
             self.data = data
             self.response = response
             self.error = error
         }
         
-        init(withError error: Error) {
+        public init(withError error: Error) {
             self.error = error
         }
     }
