@@ -15,6 +15,8 @@ public class RestManager {
     
     public var httpBody: Data?
     
+    public init() {}
+    
     public func makeRequest(toURL url: URL,
                      withHttpMethod httpMethod: HttpMethod,
                      completion: @escaping (_ result: Results) -> Void) {

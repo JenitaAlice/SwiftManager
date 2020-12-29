@@ -9,6 +9,8 @@ import Foundation
 
 public struct StreamerConfig {
     
+    public init() {}
+    
     public var socketHostUrl: String!
     public var socketMode: String!
     public var socketHostPort: Int!
