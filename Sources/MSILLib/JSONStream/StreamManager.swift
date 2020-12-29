@@ -18,7 +18,7 @@ public enum StreamType: String {
 
 public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelegate {
     
-    static let shared = StreamerManager()
+    public static let shared = StreamerManager()
     private var sh: SocketHelper?//SocketHelper(url: AppUrl.stream, port: UInt32(AppUrl.port))
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
