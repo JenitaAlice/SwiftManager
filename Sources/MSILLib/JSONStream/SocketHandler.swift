@@ -41,7 +41,7 @@ class SocketHelper: NSObject, StreamDelegate {
                 if len<1 {
                     streamError()
                 } else {
-                    //print("Stream request : \(String.init(data: request, encoding: String.Encoding.utf8) ?? "")")
+                    //Stream request : \(String.init(data: request, encoding: String.Encoding.utf8) ?? ""
                 }
             }
         }else {
@@ -73,7 +73,6 @@ class SocketHelper: NSObject, StreamDelegate {
                 let sslSetWrite = CFWriteStreamSetProperty(oStream, CFStreamPropertyKey(kCFStreamPropertySSLSettings), dict)
                 
                 if sslSetRead == false || sslSetWrite == false {
-                    //print("SSL Configuration Failed")
                     logConfig?.printLog(msg: "SSL Configuration Failed")
                 }
             }
@@ -90,7 +89,7 @@ class SocketHelper: NSObject, StreamDelegate {
         }
     }
     func stopStream() {
-        //print("Stop Stream")
+        //Stop Stream
         close(iStream)
         close(oStream)
         iStream = nil

@@ -370,12 +370,10 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
     }
     
     func connectionCompleted() {
-        ////print("connectionCompleted - Connection Completed")
         callRequestForReconnect()
     }
     
     func connectionInetrupted() {
-        // //print("connectionInetrupted - Connection Inetrupted")
         // Should we remove the old backup symbols
         mapOldSymTable.removeObject(forKey: StreamType.Quote.rawValue as AnyObject)
         mapOldSymTable.removeObject(forKey: StreamType.Quote2.rawValue as AnyObject)
@@ -393,33 +391,13 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         }
     }
     
-    // MARK: - Util Methods
-    //    func processData<DataType:DataProvider>(res:MSFStreamResponse<DataType>, ) {
-    //        //let strData = String(data:response, encoding: String.Encoding.utf8)
-    //        ////print("Stream Response : \(strData!)")
-    //        let res = try decoder.decode(DataType.ProvidedData, from: response)
-    //        if let sType = res.response.streaming_type {
-    //            if let symbol = res.response.data?.symbol {
-    //                if let subscribers = getSubscribers(symbol:symbol, sType: StreamerManager.StreamType(rawValue: sType)!) {
-    //                    for subscriber in subscribers {
-    //                        let sub = (subscriber as! StreamerManagerDelegate)
-    //                        sub.streamingResponseRecived(response: res.response.data!)
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
     // MARK: - Testing
     func printObj() {
-        // //print("printObj")
         for key in mapTable.keyEnumerator() {
             if let sTypeMap = (mapTable.object(forKey: (key as AnyObject))) {
-                //print("\n\nStream Type = \(key)\n")
                 for keySim in sTypeMap.keyEnumerator() {
-                    //print("\n\nKey = \(keySim)\n")
                     if let subArray = sTypeMap.object(forKey: (keySim as! String)) as! NSMutableArray? {
                         for _ in subArray {
-                            //print("\tValue = \(value)\n")
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import Foundation
 
 public extension RestManager {
     
-    public enum HttpMethod: String {
+    enum HttpMethod: String {
         case get
         case post
         case put
@@ -17,7 +17,7 @@ public extension RestManager {
         case delete
     }
     
-    public struct RestEntity {
+    struct RestEntity {
         private var values: [String: String] = [:]
         
         mutating func add(value: String, forKey key: String) {
@@ -39,7 +39,7 @@ public extension RestManager {
     
     
     
-    public struct Response {
+    struct Response {
         public var response: URLResponse?
         public var httpStatusCode: Int = 0
         public var headers = RestEntity()
@@ -57,9 +57,7 @@ public extension RestManager {
         }
     }
     
-    
-    
-    public struct Results {
+    struct Results {
         public var data: Data?
         public var response: Response?
         public var error: Error?
@@ -74,16 +72,16 @@ public extension RestManager {
             self.error = error
         }
     }
-
     
-    
-    public enum CustomError: Error {
+    enum CustomError: Error {
         case failedToCreateRequest
     }
+    
 }
 
+
 extension RestManager.CustomError: LocalizedError {
-    public var localizedDescription: String {
+    var localizedDescription: String {
         switch self {
         case .failedToCreateRequest: return NSLocalizedString(ErrorMsgConfig().no_url_request, comment: "")
         }

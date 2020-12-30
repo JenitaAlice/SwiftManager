@@ -13,8 +13,8 @@ public class SocketMode {
 }
 
 public class StreamRequestType {
-    public static var subscribe: String = "subscribe"
-    public static var unsubscribe: String = "unsubscribe"
+    static var subscribe: String = "subscribe"
+    static var unsubscribe: String = "unsubscribe"
 }
 
 public class StreamLevel {

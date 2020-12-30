@@ -31,8 +31,6 @@ class BinaryParser: NSObject {
     
     func process() {
         
-        LogConfig().printLog(msg: "\(binaryData)")
-        
         if(binaryData.count > 5){
             
             let bufferData = Data(binaryData[0..<4])
@@ -44,7 +42,6 @@ class BinaryParser: NSObject {
             if(binaryData.count >= length){
                 
                 let singleBinaryPacketData =  Array(binaryData[5..<binaryData.count])
-                //print("Single Binary Packet Data", singleBinaryPacketData)
                 
                 if(compressionAlgo == 10){
                     decompressZLib(data: singleBinaryPacketData)
@@ -64,7 +61,6 @@ class BinaryParser: NSObject {
     func processDecomData(data: [UInt8]) {
         
         if(data.count <= 0){
-            print("Decompressed Length is wrong exiting the loop")
             return
         }
         
@@ -72,7 +68,6 @@ class BinaryParser: NSObject {
         let lastProcLen = decodePKT(data: Array(data[0..<Int(length)]))
         
         if(lastProcLen <= 0){
-            print("Packet Length is wrong exiting the loop $lastProcLen")
             return
         }
             
@@ -90,7 +85,6 @@ class BinaryParser: NSObject {
         let specMatrix = pktSpec[Int(pktType)]
         
         if (specMatrix == nil) {
-            print("Unknown PktType \(pktType)")
             return Int(pktLen)
         }
         
@@ -132,7 +126,6 @@ class BinaryParser: NSObject {
             let jsonSpec = specMatrix[pktKey]
             
             if(jsonSpec == nil){
-                print("Unknown Pkt spec breaking \(pktKey)")
                 return [:]
             }
             
@@ -144,7 +137,7 @@ class BinaryParser: NSObject {
                 if let bufferString = String(bytes: bufferData, encoding: .utf8) {
                     rawData[(spec.key)!] = [jsonSpec, bufferString]
                 } else {
-                    print("not a valid UTF-8 sequence")
+                    //not a valid UTF-8 sequence
                 }
 
             }else if(spec.type == "float"){
@@ -233,7 +226,6 @@ class BinaryParser: NSObject {
             let jsonSpec = specMatrix[pktKey]
             
             if(jsonSpec == nil){
-                print("Unknown Pkt spec breaking \(pktKey)")
                 return [:]
             }
             
@@ -245,7 +237,7 @@ class BinaryParser: NSObject {
                 if let bufferString = String(bytes: bufferData, encoding: .utf8) {
                     rawData[(spec.key)!] = [jsonSpec, bufferString]
                 } else {
-                    print("not a valid UTF-8 sequence")
+                    //not a valid UTF-8 sequence
                 }
                 
             }else if(spec.type == "float"){
@@ -367,10 +359,8 @@ class BinaryParser: NSObject {
         do {
 
             let decompressedData = try ZlibArchive.unarchive(archive: dataBuffer)
-            //print("Decompressed Data", [UInt8](decompressedData))
             processDecomData(data: [UInt8](decompressedData))
-            
-            
+             
         } catch let error as ZlibError {
            print(error)
         } catch let error {
