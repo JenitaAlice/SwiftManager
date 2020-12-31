@@ -15,6 +15,8 @@ public class MSFWebServiceWorker {
     public let timeInterval: TimeInterval = 35.0
     //    var task:URLSessionDataTask
     
+    public init() {}
+    
     public func sendRequestWithGetMethod<response: DataProvider>(url: String, res: response, successHandler:@escaping (_ jsonData: response) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
         
         //        var msfResponse = res
