@@ -8,21 +8,21 @@
 import UIKit
 
 public protocol DataProvider: Codable {
-    associatedtype ProvidedData: DataProvider
+    public associatedtype ProvidedData: DataProvider
 
-    func getServletGroup() -> String
-    func getServletName() -> String
-    func getServletVersion() -> String
+    public func getServletGroup() -> String
+    public func getServletName() -> String
+    public func getServletVersion() -> String
 }
-
-extension DataProvider {
-    func getServletGroup() -> String {
+  
+public extension DataProvider {
+    public func getServletGroup() -> String {
         return ""
     }
-    func getServletName() -> String {
+    public func getServletName() -> String {
         return ""
     }
-    func getServletVersion() -> String {
+    public func getServletVersion() -> String {
         return ""
     }
     
