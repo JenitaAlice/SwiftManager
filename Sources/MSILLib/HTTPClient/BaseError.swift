@@ -37,3 +37,10 @@ public class BaseError: Error {
     var actionType: ErrorDisplayTypes = ErrorDisplayTypes.kErrorActionTypeOK
     var data: [String: Any] = [:]
 }
+
+public enum HttpMethod: String {
+    case post = "POST"
+    case get = "GET"
+    case delete = "DELETE"
+    case put = "PUT"
+}

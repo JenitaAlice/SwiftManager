@@ -65,6 +65,120 @@ public class MSFWebServiceWorker {
         
     }
     
+    public func sendRequestWithMethod<request: DataProvider, response: DataProvider>(url: String, method: HttpMethod, req: request, isEncryption: Bool, res: response, successHandler:@escaping (_ jsonData: response) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
+        
+        
+        var msfRequest = BaseRequest<request>()
+        msfRequest.request = JSONRequestPart<request>()
+        msfRequest.request.data = req as? request.ProvidedData
+        
+        var request = URLRequest(url: NSURL(string: url)! as URL)
+        request.timeoutInterval = timeInterval
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = method.rawValue
+        if let session = AppConfig.shared.sessionID {
+            let sessionID = "JSESSIONID="+session
+            //            request.addValue(sessionID, forHTTPHeaderField: "Set-Cookie") Cookie
+            request.addValue(sessionID, forHTTPHeaderField: "Cookie")
+        }
+        
+        var encodeJSONData: Data?
+        do {
+            encodeJSONData =  try encoder.encode(msfRequest)
+            
+            if isEncryption {
+                let reqStr = (String(data: encodeJSONData!, encoding: String.Encoding.utf8))
+                let encryptData = Crypto.encryptText(key: AppConfig.shared.EncryptionKey!, textStr: reqStr!)
+                request.httpBody = encryptData.base64EncodedData()
+            } else {
+                request.httpBody = encodeJSONData!
+            }
+            
+            print("Request Body======\(String(data: encodeJSONData!, encoding: String.Encoding.utf8)!)")
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, dicResponse, error) -> Void in
+                DispatchQueue.main.async {
+                    if let httpResponse = dicResponse as? HTTPURLResponse {
+                        //Handle Network related errors
+                        if let unwrappedError = error {
+                            //                        //print("error====\(unwrappedError)")
+                            let errorKSec = BaseError()
+                            errorKSec.errorType = ErrorTypes.Network
+                            errorKSec.message = unwrappedError.localizedDescription
+                            failureHandler(errorKSec)
+                        } else {
+                            //Response Received
+                            if httpResponse.statusCode == 200 {
+                                if let unwrap = data {
+                                    
+                                    var unwrappedData = unwrap
+                                    if isEncryption {
+                                        if let baseData = Data(base64Encoded: unwrappedData) {
+                                            unwrappedData = Crypto.decryptText(key: AppConfig.shared.EncryptionKey!, textData: baseData)
+                                        }
+                                    }
+                                    
+                                    let decodedString = String(data: unwrappedData, encoding: .utf8)!
+                                    ////print("Response Body======\(decodedString)")
+                                    do {
+                                        let res = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments)
+                                        if let dicRes: NSDictionary = (res as? NSDictionary) {
+                                            if let response = dicRes.object(forKey: "response") as? NSDictionary {
+                                                if let infoID = response.object(forKey: "infoID") as? String {
+                                                    if BaseValidator.isValidResponse(infoID: infoID) {
+                                                        if let dicData = response.object(forKey: "data") as? NSDictionary {
+                                                            successHandler(dicData as! response)
+                                                        }
+                                                    } else {
+                                                        let errorKSec = BaseError()
+                                                        errorKSec.infoID = infoID
+                                                        if let message = response.object(forKey: "infoMsg") as? String {
+                                                            errorKSec.message = message
+                                                        }
+                                                        failureHandler(self.validatorWorker.getError(error: errorKSec))
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } catch {
+                                        let errorKSec = BaseError()
+                                        errorKSec.errorType = ErrorTypes.Network
+                                        errorKSec.message = "Parse failure"
+                                        failureHandler(errorKSec)
+                                    }
+                                    return
+                                }
+                            } else {
+                                let errorKSec = BaseError()
+                                errorKSec.errorType = ErrorTypes.Network
+                                errorKSec.message = "Request failure"
+                                failureHandler(errorKSec)
+                            }
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    //This block also gives us "API Service is not available." error message sometimes
+                    if let unwrappedError = error {
+                        let errorKSec = BaseError()
+                        errorKSec.errorType = ErrorTypes.Network
+                        errorKSec.message = unwrappedError.localizedDescription
+                        failureHandler(errorKSec)
+                    }
+                }
+            }
+            task.resume()
+            
+        } catch {
+            let errorKSec = BaseError()
+            errorKSec.errorType = ErrorTypes.Parsing
+            errorKSec.message = error.localizedDescription
+            failureHandler(errorKSec)
+            //            //print(error.localizedDescription)
+        }
+    }
+    
+    
     func getParserError() -> BaseError {
         
         let errorKSec = BaseError()
@@ -110,13 +224,6 @@ public class MSFWebServiceWorker {
         msfRequest.request = JSONRequestPart<request>()
         //        req.accID1 = ""
         msfRequest.request.data = req as? request.ProvidedData
-        msfRequest.request.formFactor = "M"
-        msfRequest.request.response_format = "json"
-        if let appID = AppConfig.shared.appID {
-            msfRequest.request.appID = appID
-        } else {
-            msfRequest.request.appID = "0"
-        }
         
         guard let url = AppConfig.shared.getURL else {
             return
@@ -239,14 +346,7 @@ public class MSFWebServiceWorker {
         var msfResponse = BaseResponse<response>()
         
         msfRequest.request = JSONRequestPart<request>()
-        if let appID = AppConfig().appID {
-            msfRequest.request.appID = appID
-        } else {
-            msfRequest.request.appID = "0"
-        }
         msfRequest.request.data = req as? request.ProvidedData
-        msfRequest.request.formFactor = "M"
-        msfRequest.request.response_format = "json"
         
         guard let url = AppConfig.shared.getURL else {
             return
