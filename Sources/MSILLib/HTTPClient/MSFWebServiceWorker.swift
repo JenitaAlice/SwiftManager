@@ -1,13 +1,13 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Janita Alice on 31/12/20.
 //
 
 import Foundation
 
-class MSFWebServiceWorker {
+public class MSFWebServiceWorker {
     
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
@@ -15,7 +15,7 @@ class MSFWebServiceWorker {
     let timeInterval: TimeInterval = 35.0
     //    var task:URLSessionDataTask
     
-    func sendRequestWithGetMethod<response: DataProvider>(url: String, res: response, successHandler:@escaping (_ jsonData: response) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
+    public func sendRequestWithGetMethod<response: DataProvider>(url: String, res: response, successHandler:@escaping (_ jsonData: response) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
         
         //        var msfResponse = res
         // var msfResponse = BaseResponse<response>()
@@ -91,7 +91,7 @@ class MSFWebServiceWorker {
     }
     
     /// Response in class Format
-    func sendRequest<request: DataProvider, response: DataProvider>(req: request, res: response, isEncryption: Bool, successHandler:@escaping (_ jsonData: response.ProvidedData?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
+    public func sendRequest<request: DataProvider, response: DataProvider>(req: request, res: response, isEncryption: Bool, successHandler:@escaping (_ jsonData: response.ProvidedData?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
         return sendRequest(req: req, res: res, isEncryption: isEncryption, successHandler: { (jsonData, _) in
             successHandler(jsonData)
         }) { (error) in
@@ -100,7 +100,7 @@ class MSFWebServiceWorker {
     }
     
     /// response with Dictionary
-    func sendRequest<request: DataProvider>(req: request, isEncryption: Bool, successHandler:@escaping (_ dictData: NSDictionary?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
+    public func sendRequest<request: DataProvider>(req: request, isEncryption: Bool, successHandler:@escaping (_ dictData: NSDictionary?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
         
         var msfRequest = BaseRequest<request>()
         //        var msfResponse = BaseResponse<response>()
@@ -231,7 +231,7 @@ class MSFWebServiceWorker {
     }
     
     /// Response in class Format with  server Time
-    func sendRequest<request: DataProvider, response: DataProvider>(req: request, res: response, isEncryption: Bool, successHandler:@escaping (_ jsonData: response.ProvidedData?, _ serverTime: String?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
+    public func sendRequest<request: DataProvider, response: DataProvider>(req: request, res: response, isEncryption: Bool, successHandler:@escaping (_ jsonData: response.ProvidedData?, _ serverTime: String?) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
         
         var msfRequest = BaseRequest<request>()
         var msfResponse = BaseResponse<response>()

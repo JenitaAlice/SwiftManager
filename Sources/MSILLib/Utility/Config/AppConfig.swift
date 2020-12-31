@@ -9,7 +9,7 @@ import Foundation
 
 public class AppConfig {
     
-    static let shared = AppConfig()
+    public let shared = AppConfig()
     
     public var sessionID: String?
     public var getURL: String?
