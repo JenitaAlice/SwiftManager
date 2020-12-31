@@ -11,8 +11,8 @@ protocol ValidatorWorkerProtocol {
     func getError(error: BaseError) -> BaseError
 }
 
-class ValidatorWorker: ValidatorWorkerProtocol {
-    func getError(error: BaseError) -> BaseError {
+public class ValidatorWorker: ValidatorWorkerProtocol {
+    public func getError(error: BaseError) -> BaseError {
         if error.infoID.count > 0 {
             error.actionType = InfoConfigManager.shared.getAction(infoID: error.infoID)
             if error.message.count == 0 {

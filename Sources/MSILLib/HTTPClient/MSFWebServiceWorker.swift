@@ -11,7 +11,7 @@ public class MSFWebServiceWorker {
     
     public let decoder = JSONDecoder()
     public let encoder = JSONEncoder()
-    var validatorWorker = ValidatorWorker()
+    public var validatorWorker = ValidatorWorker()
     public let timeInterval: TimeInterval = 35.0
     //    var task:URLSessionDataTask
     
