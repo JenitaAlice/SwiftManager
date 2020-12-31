@@ -9,10 +9,10 @@ import Foundation
 
 public class MSFWebServiceWorker {
     
-    let decoder = JSONDecoder()
-    let encoder = JSONEncoder()
-    var validatorWorker = ValidatorWorker()
-    let timeInterval: TimeInterval = 35.0
+    public let decoder = JSONDecoder()
+    public let encoder = JSONEncoder()
+    public var validatorWorker = ValidatorWorker()
+    public let timeInterval: TimeInterval = 35.0
     //    var task:URLSessionDataTask
     
     public func sendRequestWithGetMethod<response: DataProvider>(url: String, res: response, successHandler:@escaping (_ jsonData: response) -> Void, failureHandler:@escaping (_ error: BaseError) -> Void) {
