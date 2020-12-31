@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ErrorTypes {
+public enum ErrorTypes {
     case Network
     case Server
     case InvalidSession
@@ -15,7 +15,7 @@ enum ErrorTypes {
     case None
 }
 
-enum ErrorDisplayTypes: Int {
+public enum ErrorDisplayTypes: Int {
     case kErrorActionTypeNone = 0,
     kErrorActionTypeOK = 50,
     kErrorActionTypeMessageWithYESorNO = 51,
@@ -29,7 +29,7 @@ enum ErrorDisplayTypes: Int {
     kErrorActionTypeMessageDR = 60
 }
 
-class BaseError: Error {
+public class BaseError: Error {
     var message: String = ""
     var infoID: String = ""
     var svcName: String = ""
