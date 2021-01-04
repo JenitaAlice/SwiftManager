@@ -16,5 +16,7 @@ class ErrorMsgConfig {
     let connection_issue: String = "Network connection issue, Can you please Retry"
     let internal_Error_Occured_Message: String = "Internal Error. Please try again"
     let no_url_request: String = "Unable to create the URLRequest object"
+    let parse_failure: String = "Data parsing failure"
+    let request_failure: String = "Data request failure"
     
 }
