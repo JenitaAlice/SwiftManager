@@ -191,22 +191,22 @@ public class MSFWebServiceWorker {
 
 public extension MSFWebServiceWorker {
     
-    struct RestEntity {
+    public struct RestEntity {
         private var values: [String: String] = [:]
         
-        mutating func add(value: String, forKey key: String) {
+        public mutating func add(value: String, forKey key: String) {
             values[key] = value
         }
         
-        func value(forKey key: String) -> String? {
+        public func value(forKey key: String) -> String? {
             return values[key]
         }
         
-        func allValues() -> [String: String] {
+        public func allValues() -> [String: String] {
             return values
         }
         
-        func totalItems() -> Int {
+        public func totalItems() -> Int {
             return values.count
         }
     }
