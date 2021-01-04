@@ -30,12 +30,12 @@ public enum ErrorDisplayTypes: Int {
 }
 
 public class BaseError: Error {
-    var message: String = ""
-    var infoID: String = ""
-    var svcName: String = ""
-    var errorType: ErrorTypes = ErrorTypes.None
-    var actionType: ErrorDisplayTypes = ErrorDisplayTypes.kErrorActionTypeOK
-    var data: [String: Any] = [:]
+    public var message: String = ""
+    public var infoID: String = ""
+    public var svcName: String = ""
+    public var errorType: ErrorTypes = ErrorTypes.None
+    public var actionType: ErrorDisplayTypes = ErrorDisplayTypes.kErrorActionTypeOK
+    public var data: [String: Any] = [:]
 }
 
 public enum HttpMethod: String {
