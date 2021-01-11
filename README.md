@@ -73,11 +73,11 @@ import MSILLib
 
 To connect with socket stream, configure streamer manager with details of: 
 
->    Streaming URL
->    Streaming port
->    Socket mode - TCP/TLS
->    Binary stream (Boolean)
->    Quote level - Quote/Quote2
+    - Streaming URL
+    - Streaming port
+    - Socket mode - TCP/TLS
+    - Binary stream (Boolean)
+    - Quote level - Quote/Quote2
 
 **Example**
 ```
