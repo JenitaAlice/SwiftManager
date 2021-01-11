@@ -51,9 +51,9 @@ Update for Xcode 11:- Swift package is integrated into Xcode 11. One of the give
 
 **Example**
 
->    File > Swift Packages > Add Package Dependency
->    Add git@git.assembla.com:msxtream.ios-sdk.git
->    Select "Up to Next Major" with “1.0.0” or “Branch” with “MSILLib”
+>    - File > Swift Packages > Add Package Dependency
+>    - Add git@git.assembla.com:msxtream.ios-sdk.git
+>    - Select "Up to Next Major" with “1.0.0” or “Branch” with “MSILLib”
 
 
 ## Requirements:-
