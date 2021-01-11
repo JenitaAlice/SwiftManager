@@ -2,22 +2,22 @@
 
 A framework with functions and decompression algorithms for working with various streaming connections. MSILLib framework is a swift package with a collection of functions for: 
 
->    - JSON streaming
->    - Binary streaming 
->    - HTTP API calls
+    - JSON streaming
+    - Binary streaming 
+    - HTTP API calls
 
 The SDK accommodates relevant methods for subscribing and unsubscribing Market data.
 
 
 ## Features:-
 
->    - Create connection with socket stream
->    - Close connection with socket stream
->    - Subscribe to one or more market data
->    - Unsubscribe one or multiple symbols
->    - Unsubscribe all symbols
->    - Easy implementation of REST API calls to load decoded data
->    - Print console
+    - Create connection with socket stream
+    - Close connection with socket stream
+    - Subscribe to one or more market data
+    - Unsubscribe one or multiple symbols
+    - Unsubscribe all symbols
+    - Easy implementation of REST API calls to load decoded data
+    - Print console
 
 
 ## Installation:-
@@ -26,7 +26,7 @@ MSILLib can be integrated into your project using Swift Package Manager.
 
 ### Swift Package Manager:-
 
-```sh
+```
 import PackageDescription
 
 let package = Package(
@@ -45,15 +45,15 @@ let package = Package(
 
 Update for Xcode 11:- Swift package is integrated into Xcode 11. One of the given repository's URLs below can be used to add the framework to a project.
 
-HTTPS  :     https://git.assembla.com/msxtream.ios-sdk.git
-SSH         :   git@git.assembla.com:msxtream.ios-sdk.git
+    - HTTPS  :     https://git.assembla.com/msxtream.ios-sdk.git
+    - SSH         :   git@git.assembla.com:msxtream.ios-sdk.git
 
 
 **Example**
 
->   - File > Swift Packages > Add Package Dependency
->   - Add git@git.assembla.com:msxtream.ios-sdk.git
->   - Select "Up to Next Major" with “1.0.0” or “Branch” with “MSILLib”
+>    File > Swift Packages > Add Package Dependency
+>    Add git@git.assembla.com:msxtream.ios-sdk.git
+>    Select "Up to Next Major" with “1.0.0” or “Branch” with “MSILLib”
 
 
 ## Requirements:-
