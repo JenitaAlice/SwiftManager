@@ -7,33 +7,33 @@
 
 import Foundation
 
-struct QuoteStreamerResponse : DataProvider {
-    typealias ProvidedData = QuoteStreamerResponse
+public struct QuoteStreamerResponse : DataProvider {
+    public typealias ProvidedData = QuoteStreamerResponse
     
-    var ch : String!
-    var ltq : String!
-    var c : String!
-    var yL : String!
-    var aPr : String!
-    var aSz : String!
-    var sym : String!
-    var oI : String!
-    var avP : String!
-    var h : String!
-    var vol : String!
-    var ttq : String!
-    var ttv : String!
-    var yH : String!
-    var ltt : String!
-    var bPr : String!
-    var bSz : String!
-    var l : String!
-    var chp : String!
-    var ltp : String!
-    var tBQ : String!
-    var tSQ : String!
-    var o : String!
-    var ind : String!
+    public var ch : String!
+    public var ltq : String!
+    public var c : String!
+    public var yL : String!
+    public var aPr : String!
+    public var aSz : String!
+    public var sym : String!
+    public var oI : String!
+    public var avP : String!
+    public var h : String!
+    public var vol : String!
+    public var ttq : String!
+    public var ttv : String!
+    public var yH : String!
+    public var ltt : String!
+    public var bPr : String!
+    public var bSz : String!
+    public var l : String!
+    public var chp : String!
+    public var ltp : String!
+    public var tBQ : String!
+    public var tSQ : String!
+    public var o : String!
+    public var ind : String!
 
     public enum CodingKeys: String, CodingKey
     {
@@ -63,10 +63,10 @@ struct QuoteStreamerResponse : DataProvider {
         case ind
     }
 
-    init() {
+    public init() {
     }
 
-    init(from decoder:Decoder) throws
+    public init(from decoder:Decoder) throws
     {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         do {ch = try values.decode(String.self, forKey: .ch)}catch{}
@@ -124,7 +124,7 @@ struct QuoteStreamerResponse : DataProvider {
         if let ind = ind { do { try container.encode(ind, forKey: .ind) }catch{} }
     }
 
-    func getValueForKey(key : CodingKeys)-> AnyObject
+    public func getValueForKey(key : CodingKeys)-> AnyObject
     {
         switch key.rawValue {
         case CodingKeys.ch.rawValue:
@@ -178,13 +178,13 @@ struct QuoteStreamerResponse : DataProvider {
         default:return "" as AnyObject
         }
     }
-    func getServletGroup() -> String {
+    public func getServletGroup() -> String {
      return "Streamer"
     }
-    func getServletName() -> String {
+    public func getServletName() -> String {
      return "Quote"
     }
-    func getServletVersion() -> String {
+    public func getServletVersion() -> String {
      return "1.0.0"
     }
 

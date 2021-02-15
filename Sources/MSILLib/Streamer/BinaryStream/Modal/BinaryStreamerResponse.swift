@@ -7,32 +7,32 @@
 
 import Foundation
 
-struct BinaryStreamerResponse : DataProvider {
+public struct BinaryStreamerResponse : DataProvider {
     
-    typealias ProvidedData = BinaryStreamerResponse
+    public typealias ProvidedData = BinaryStreamerResponse
     
-    var atp : String?
-    var chng : String?
-    var chngPer : String?
-    var close : String?
-    var high : String?
-    var lcl : String?
-    var low : String?
-    var ltp : String?
-    var ltq : String?
-    var ltt : String?
-    var open : String?
-    var symbol : String?
-    var ttv : String?
-    var ucl : String?
-    var vol : String?
-    var yHigh : String?
-    var yLow : String?
-    var OI: String?
-    var OIChngPer: String?
-    var precision: String?
+    public var atp : String?
+    public var chng : String?
+    public var chngPer : String?
+    public var close : String?
+    public var high : String?
+    public var lcl : String?
+    public var low : String?
+    public var ltp : String?
+    public var ltq : String?
+    public var ltt : String?
+    public var open : String?
+    public var symbol : String?
+    public var ttv : String?
+    public var ucl : String?
+    public var vol : String?
+    public var yHigh : String?
+    public var yLow : String?
+    public var OI: String?
+    public var OIChngPer: String?
+    public var precision: String?
 
-    enum CodingKeys: String, CodingKey
+    public enum CodingKeys: String, CodingKey
     {
         case atp
         case chng
@@ -56,10 +56,10 @@ struct BinaryStreamerResponse : DataProvider {
         case precision
     }
 
-    init() {
+    public init() {
     }
 
-    init(from decoder:Decoder) throws
+    public init(from decoder:Decoder) throws
     {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         do {atp = try values.decode(String.self, forKey: .atp)}catch{}
@@ -84,7 +84,7 @@ struct BinaryStreamerResponse : DataProvider {
         do {precision = try values.decode(String.self, forKey: .precision)}catch{}
     }
 
-    func encode(to encoder: Encoder) throws
+    public func encode(to encoder: Encoder) throws
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let atp = atp { do { try container.encode(atp, forKey: .atp) }catch{} }
@@ -109,7 +109,7 @@ struct BinaryStreamerResponse : DataProvider {
         if let precision = precision { do { try container.encode(precision, forKey: .precision) }catch{} }
     }
 
-    func getValueForKey(key : CodingKeys)-> AnyObject
+    public func getValueForKey(key : CodingKeys)-> AnyObject
     {
         switch key.rawValue {
         case CodingKeys.atp.rawValue:
@@ -157,13 +157,13 @@ struct BinaryStreamerResponse : DataProvider {
         default:return "" as AnyObject
         }
     }
-    func getServletGroup() -> String {
+    public func getServletGroup() -> String {
      return "Streamer"
     }
-    func getServletName() -> String {
+    public func getServletName() -> String {
      return "Quote"
     }
-    func getServletVersion() -> String {
+    public func getServletVersion() -> String {
      return "1.0.0"
     }
 

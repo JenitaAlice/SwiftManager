@@ -7,24 +7,24 @@
 
 import Foundation
 
-struct Asks: DataProvider {
+public struct Asks: DataProvider {
 
-    typealias ProvidedData = Asks
+    public typealias ProvidedData = Asks
 
-    var qty: String?
-    var no: String?
-    var price: String?
+    public var qty: String?
+    public var no: String?
+    public var price: String?
 
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case qty
         case no
         case price
     }
 
-    init() {
+    public init() {
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         do {qty = try values.decode(String.self, forKey: .qty)} catch {}
         do {no = try values.decode(String.self, forKey: .no)} catch {}

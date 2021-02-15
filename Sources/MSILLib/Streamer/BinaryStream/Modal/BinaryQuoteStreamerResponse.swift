@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct BinaryQuoteStreamerResponse: DataProvider {
+public struct BinaryQuoteStreamerResponse: DataProvider {
 
-    typealias ProvidedData = BinaryQuoteStreamerResponse
+    public typealias ProvidedData = BinaryQuoteStreamerResponse
 
-    var symbol: String?
-    var totBuyQty: String?
-    var totSellQty: String?
-    var bid: [Asks]?
-    var ask: [Asks]?
+    public var symbol: String?
+    public var totBuyQty: String?
+    public var totSellQty: String?
+    public var bid: [Asks]?
+    public var ask: [Asks]?
 
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case symbol
         case totBuyQty
         case totSellQty
@@ -25,10 +25,10 @@ struct BinaryQuoteStreamerResponse: DataProvider {
         case ask
     }
 
-    init() {
+    public init() {
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         do {symbol = try values.decode(String.self, forKey: .symbol)} catch {}
         do {totBuyQty = try values.decode(String.self, forKey: .totBuyQty)} catch {}
