@@ -125,7 +125,7 @@ class SocketHelper: NSObject, StreamDelegate {
     }
     func bufferTokenize(output: Data?) {
         if let outData = output {
-            if(streamerConfig?.binaryStream != nil && !(streamerConfig?.binaryStream)!){
+            if(isBinary){
                 if let jsonStr = String(data: outData, encoding: String.Encoding.utf8) {
                     commonStr = commonStr?.appending(jsonStr)
                     if let array = commonStr?.components(separatedBy: "\n") {
