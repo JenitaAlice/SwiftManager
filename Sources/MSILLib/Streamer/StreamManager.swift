@@ -67,6 +67,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         for sym in syms {
             subscribes(sym: sym, objSub: objSub, sType: sType)
         }
+        startStreamingForType(sType: sType)
     }
     
     private func subscribes(sym: String, objSub: StreamerManagerDelegate?, sType: StreamType) {
@@ -136,7 +137,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
     }
     
     // MARK: - Action Methods
-    public func startStreamingForType(sType: StreamType) {
+    private func startStreamingForType(sType: StreamType) {
         if let arySymbols = getSymbols(sType: sType) {
             request(symbols: arySymbols, sType: sType)
         }
