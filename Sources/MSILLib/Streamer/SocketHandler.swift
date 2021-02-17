@@ -24,6 +24,7 @@ class SocketHelper: NSObject, StreamDelegate {
     lazy var lastRequest = Dictionary<String, Data> ()
     var streamerConfig: StreamerConfig?
     var logConfig: LogConfig?
+    var isBinary = true
     weak var delegate: SocketHelperDelegate?
     
     init(aUrl: String, aPort: UInt32) {

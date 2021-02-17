@@ -28,7 +28,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
     public var logConfig: LogConfig = LogConfig()
     public var isStreamingAvailable = true
     private var ssl = false
-    private var isBinary = false
+    public var isBinary = true
     
     public override init() {
         super.init()
@@ -38,7 +38,6 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         if sh == nil {
             if let port = streamerConfig?.socketHostPort, let url = streamerConfig?.socketHostUrl {
                 ssl = (streamerConfig?.socketMode == SocketMode.TLS) ? true : false
-                isBinary = ((streamerConfig?.binaryStream) != nil)
                 sh = SocketHelper(aUrl: url, aPort: UInt32(String(port))!)
             }else{
                 logConfig.printLog(msg: ErrorMsgConfig().network_Invalid_response)
@@ -47,6 +46,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         if let socketHelper = sh {
             socketHelper.streamerConfig = streamerConfig
             socketHelper.logConfig = logConfig
+            socketHelper.isBinary = isBinary
             socketHelper.openStream()
             socketHelper.delegate = self
         }

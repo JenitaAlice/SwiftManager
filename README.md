@@ -85,7 +85,7 @@ import MSILLib
 
 let streamManager = StreamerManager()
 Streaming is determined by the binary stream configuration.
-streamManager.streamerConfig = StreamerConfig(socketHostUrl: “streaming_url", socketMode: SocketMode.TCP, socketHostPort: streaming_port, binaryStream: Bool)
+streamManager.streamerConfig = StreamerConfig(socketHostUrl: “streaming_url", socketMode: SocketMode.TCP, socketHostPort: streaming_port)
 ```
 
 **Create Connection:-**
@@ -101,7 +101,6 @@ streamManager.closeConnection()
 **Socket Subscription:-**
 ```
 streamManager.subscribe(syms: ["Symbol"], objSub: self, sType: StreamLevel.quote)
-streamManager.startStreamingForType(sType: StreamLevel.quote)
 ```
 
 **Socket Un-subscription:-**
