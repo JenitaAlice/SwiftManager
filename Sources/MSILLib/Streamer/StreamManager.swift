@@ -29,6 +29,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
     public var isStreamingAvailable = true
     private var ssl = false
     public var isBinary = true
+    public var reconnectTimeInterval = 2
     
     public override init() {
         super.init()
@@ -47,6 +48,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
             socketHelper.streamerConfig = streamerConfig
             socketHelper.logConfig = logConfig
             socketHelper.isBinary = isBinary
+            socketHelper.reconnectTimeInterval = reconnectTimeInterval
             socketHelper.openStream()
             socketHelper.delegate = self
         }
@@ -56,6 +58,8 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
         if let socketHelper = sh {
             socketHelper.streamerConfig = streamerConfig
             socketHelper.logConfig = logConfig
+            socketHelper.isBinary = isBinary
+            socketHelper.reconnectTimeInterval = reconnectTimeInterval
             socketHelper.stopStream()
             NSObject.cancelPreviousPerformRequests(withTarget:socketHelper)
             sh = nil
@@ -271,6 +275,8 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
             if let socketHelper = sh {
                 socketHelper.streamerConfig = streamerConfig
                 socketHelper.logConfig = logConfig
+                socketHelper.isBinary = isBinary
+                socketHelper.reconnectTimeInterval = reconnectTimeInterval
                 socketHelper.request(request: encodeJSONData, sType:sType.rawValue)
             }
         } catch {

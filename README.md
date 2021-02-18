@@ -100,12 +100,12 @@ streamManager.closeConnection()
 
 **Socket Subscription:-**
 ```
-streamManager.subscribe(syms: ["Symbol"], objSub: self, sType: StreamLevel.quote)
+streamManager.subscribe(syms: ["22_NSE"], objSub: self, sType: StreamLevel.quote)
 ```
 
 **Socket Un-subscription:-**
 ```
-streamManager.unSubscribe(aSym: "Symbol", objSub: self, sType: StreamLevel.quote)
+streamManager.unSubscribe(aSym: "22_NSE", objSub: self, sType: StreamLevel.quote)
 ```
 
 **Un-subscribe all:-**

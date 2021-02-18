@@ -25,6 +25,7 @@ class SocketHelper: NSObject, StreamDelegate {
     var streamerConfig: StreamerConfig?
     var logConfig: LogConfig?
     var isBinary = true
+    var reconnectTimeInterval = 2
     weak var delegate: SocketHelperDelegate?
     
     init(aUrl: String, aPort: UInt32) {
@@ -116,7 +117,7 @@ class SocketHelper: NSObject, StreamDelegate {
     func streamError() {
         stopStream()
         NSObject.cancelPreviousPerformRequests(withTarget:self)
-        perform(#selector(callReconnect), with: nil, afterDelay: 2)
+        perform(#selector(callReconnect), with: nil, afterDelay: reconnectTimeInterval)
     }
     @objc func callReconnect() {
         if let del = delegate {
