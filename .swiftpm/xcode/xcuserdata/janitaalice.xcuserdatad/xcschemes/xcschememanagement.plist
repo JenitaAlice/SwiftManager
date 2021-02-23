@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>MSXTREAMLIB.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>MSILLibTests</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>MSXTREAMLIB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>MSXTREAMLIBTests</key>
 		<dict>
 			<key>primary</key>
 			<true/>

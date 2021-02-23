@@ -117,7 +117,7 @@ class SocketHelper: NSObject, StreamDelegate {
     func streamError() {
         stopStream()
         NSObject.cancelPreviousPerformRequests(withTarget:self)
-        perform(#selector(callReconnect), with: nil, afterDelay: reconnectTimeInterval)
+        perform(#selector(callReconnect), with: nil, afterDelay: TimeInterval(reconnectTimeInterval))
     }
     @objc func callReconnect() {
         if let del = delegate {

@@ -1,5 +1,5 @@
 //
-//  BinaryQuoteStreamerResponse.swift
+//  QuoteLevelTwoResponse.swift
 //  Binary Streaming
 //
 //  Created by Janita Alice on 23/12/20.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct BinaryQuoteStreamerResponse: DataProvider {
+public struct QuoteLevelTwoResponse: DataProvider {
 
-    public typealias ProvidedData = BinaryQuoteStreamerResponse
+    public typealias ProvidedData = QuoteLevelTwoResponse
 
     public var symbol: String?
     public var totBuyQty: String?

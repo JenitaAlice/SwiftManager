@@ -1,6 +1,6 @@
-# MSILLib
+# MSXTREAMLIB
 
-A framework with functions and decompression algorithms for working with various streaming connections. MSILLib framework is a swift package with a collection of functions for: 
+A framework with functions and decompression algorithms for working with various streaming connections. MSXTREAMLIB framework is a swift package with a collection of functions for: 
 
     - JSON streaming
     - Binary streaming 
@@ -22,7 +22,7 @@ The SDK accommodates relevant methods for subscribing and unsubscribing Market d
 
 ## Installation:-
 
-MSILLib can be integrated into your project using Swift Package Manager.
+MSXTREAMLIB can be integrated into your project using Swift Package Manager.
 
 ### Swift Package Manager:-
 
@@ -37,7 +37,7 @@ let package = Package(
     targets: [
         .target(
             name: "TargetName",
-            dependencies: ["MSILLib"]
+            dependencies: ["MSXTREAMLIB"]
         )
     ]
 )
@@ -53,7 +53,7 @@ Update for Xcode 11:- Swift package is integrated into Xcode 11. One of the give
 
 >    - File > Swift Packages > Add Package Dependency
 >    - Add git@git.assembla.com:msxtream.ios-sdk.git
->    - Select "Up to Next Major" with “1.0.0” or “Branch” with “MSILLib”
+>    - Select "Up to Next Major" with “1.0.0” or “Branch” with “MSXTREAMLIB”
 
 
 ## Requirements:-
@@ -63,10 +63,10 @@ iOS 10+, Swift 4+
 
 ## Usage:-
 
-In code import MSILLib SDK like so: 
+In code import MSXTREAMLIB SDK like so: 
 
 ```
-import MSILLib
+import MSXTREAMLIB
 ```
 
 ### Socket Connection
@@ -81,7 +81,7 @@ To connect with socket stream, configure streamer manager with details of:
 
 **Example**
 ```
-import MSILLib
+import MSXTREAMLIB
 
 let streamManager = StreamerManager()
 Streaming is determined by the binary stream configuration.
@@ -100,12 +100,12 @@ streamManager.closeConnection()
 
 **Socket Subscription:-**
 ```
-streamManager.subscribe(syms: ["22_NSE"], objSub: self, sType: StreamLevel.quote)
+streamManager.subscribe(syms: ["Symbol"], objSub: self, sType: StreamLevel.quote)
 ```
 
 **Socket Un-subscription:-**
 ```
-streamManager.unSubscribe(aSym: "22_NSE", objSub: self, sType: StreamLevel.quote)
+streamManager.unSubscribe(aSym: "Symbol", objSub: self, sType: StreamLevel.quote)
 ```
 
 **Un-subscribe all:-**
@@ -118,6 +118,10 @@ streamManager.unSubscribeAll()
 streamManager.logConfig.showLog = true
 ```
 
+**Subscription Reconnection:-**
+```
+streamManager.reconnectTimeInterval = 2
+```
 
 **StramerManagerDelegate:-**
 
@@ -131,7 +135,7 @@ func streamingResponseRecived<response>(response: response) where response : Dat
 **Example**
 
 ```
-import MSILLib
+import MSXTREAMLIB
 
 let netWorkWorker = MSFWebServiceWorker()
 netWorkWorker.sendRequestWithMethod(url: "https://req.in/api", method: .post, res: Response()) { (jsonData) in
@@ -140,3 +144,5 @@ netWorkWorker.sendRequestWithMethod(url: "https://req.in/api", method: .post, re
            // Error
 }
 ```
+
+

@@ -1,5 +1,5 @@
 //
-//  BinaryStreamerResponse.swift
+//  QuoteLevelOneResponse.swift
 //  Binary Streaming
 //
 //  Created by Janita Alice on 22/12/20.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct BinaryStreamerResponse : DataProvider {
+public struct QuoteLevelOneResponse : DataProvider {
     
-    public typealias ProvidedData = BinaryStreamerResponse
+    public typealias ProvidedData = QuoteLevelOneResponse
     
     public var atp : String?
     public var chng : String?

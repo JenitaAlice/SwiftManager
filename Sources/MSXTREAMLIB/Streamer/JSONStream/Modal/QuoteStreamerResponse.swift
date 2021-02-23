@@ -1,5 +1,5 @@
 //
-//  QuoteStreamerResponse.swift
+//  StreamerResponse.swift
 //  Streaming SDK
 //
 //  Created by Janita Alice on 08/12/20.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct QuoteStreamerResponse : DataProvider {
-    public typealias ProvidedData = QuoteStreamerResponse
+public struct StreamerResponse : DataProvider {
+    public typealias ProvidedData = StreamerResponse
     
     public var ch : String!
     public var ltq : String!

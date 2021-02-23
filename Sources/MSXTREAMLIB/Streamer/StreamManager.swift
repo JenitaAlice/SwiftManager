@@ -298,7 +298,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
             if let sType = resp["streaming_type"] as? StreamType {
                 if let data = resp["data"] as? NSDictionary {
                     if(sType == .Quote){
-                        let spec = decode(data: data as! [String : Any], type: BinaryStreamerResponse.self)!
+                        let spec = decode(data: data as! [String : Any], type: QuoteLevelOneResponse.self)!
                         if let symbol = spec.symbol {
                             if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType.rawValue)!) {
                                 for subscriber in subscribers {
@@ -309,7 +309,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
                             }
                         }
                     }else{
-                        let spec = decode(data: data as! [String : Any], type: BinaryQuoteStreamerResponse.self)!
+                        let spec = decode(data: data as! [String : Any], type: QuoteLevelTwoResponse.self)!
                         if let symbol = spec.symbol {
                             if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType.rawValue)!) {
                                 for subscriber in subscribers {
@@ -333,7 +333,7 @@ public class StreamerManager: NSObject, SocketHelperDelegate, BinaryParserDelega
                     if let streaming_type = (dicResponse as! [String: Any])["streaming_type"] as? String {
                         if streaming_type == StreamType.Quote.rawValue {
                             do {
-                                let res = try decoder.decode(MSFStreamResponse<QuoteStreamerResponse>.self, from: response)
+                                let res = try decoder.decode(MSFStreamResponse<StreamerResponse>.self, from: response)
                                 if let sType = res.response.streaming_type {
                                     if let symbol = res.response.data?.sym {
                                         if let subscribers = getSubscribers(symbol: symbol, sType: StreamType(rawValue: sType)!) {
